@@ -1,0 +1,101 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "getui2",
+        "scope": null,
+        "escapedName": "getui2",
+        "name": "getui2",
+        "rawSpec": "",
+        "spec": "latest",
+        "type": "tag"
+      }
+    ],
+    [
+      {
+        "raw": "getui2",
+        "scope": null,
+        "escapedName": "getui2",
+        "name": "getui2",
+        "rawSpec": "",
+        "spec": "latest",
+        "type": "tag"
+      },
+      "/Users/dreamboad/Projects/npm"
+    ]
+  ],
+  "_from": "getui2",
+  "_id": "getui2@0.1.1",
+  "_inCache": true,
+  "_location": "/getui2",
+  "_nodeVersion": "7.6.0",
+  "_npmOperationalInternal": {
+    "host": "s3://npm-registry-packages",
+    "tmp": "tmp/getui2-0.1.1.tgz_1500442700972_0.6026145205833018"
+  },
+  "_npmUser": {
+    "name": "qianzhang",
+    "email": "zq_sdk@163.com"
+  },
+  "_npmVersion": "4.5.0",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "getui2",
+    "scope": null,
+    "escapedName": "getui2",
+    "name": "getui2",
+    "rawSpec": "",
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "#USER"
+  ],
+  "_resolved": "https://registry.npmjs.org/getui2/-/getui2-0.1.1.tgz",
+  "_shasum": "519dd88ee2635dcd6eb8f2e425e032862f2219a2",
+  "_shrinkwrap": null,
+  "_spec": "getui2",
+  "_where": "/Users/dreamboad/Projects/npm",
+  "author": {
+    "name": "getui.com"
+  },
+  "dependencies": {
+    "crypto": "0.0.3",
+    "protobufjs": "^3.8.2",
+    "request": "^2.51.0",
+    "util": "^0.10.3"
+  },
+  "description": "Node wrapper for getui OS SDK API",
+  "devDependencies": {},
+  "directories": {},
+  "dist": {
+    "shasum": "0dde0c5bad53fcb2800b5b824d086f9cce5b2a91",
+    "tarball": "https://registry.npmjs.org/getui-sdk/-/getui-sdk-0.1.1.tgz"
+  },
+  "engines": [
+    "node >= 0.4.7"
+  ],
+  "keywords": [
+    "getui",
+    "sdk",
+    "push",
+    "os",
+    "android"
+  ],
+  "main": "index.js",
+  "maintainers": [
+    {
+      "name": "getui",
+      "email": "support@getui.com"
+    }
+  ],
+  "name": "getui2",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/npm/npm.git" 
+  },
+  "scripts": {},
+  "version": "0.1.4"
+}
