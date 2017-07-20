@@ -30,7 +30,8 @@ const APNPayload = require('getui2').APNPayload
 const SimpleAlertMsg = require('getui2').SimpleAlertMsg
 
 /**
- * GeTuiConfig.HOST GeTuiConfig.APPKEY GeTuiConfig.MASTERSECRET
+ * 1 GeTuiConfig.HOST GeTuiConfig.APPKEY GeTuiConfig.MASTERSECRET 独立文件配置
+ * 2 Code CodeMsg 自定义返回信息
  */
 const gt = new GeTui(GeTuiConfig.HOST, GeTuiConfig.APPKEY, GeTuiConfig.MASTERSECRET)
 
@@ -173,7 +174,7 @@ class PushMessage {
       appId: GeTuiConfig.APPID, 
       appkey: GeTuiConfig.APPKEY,
       transmissionType: 2,
-      transmissionContent: Helper.formatTransmissioMsg(message)
+      transmissionContent: message
     }
   }
 
@@ -205,19 +206,19 @@ module.exports = new PushMessage()
 
 
 /**
- * 个推调用
+ * 个推调用 返回promise对象 用await或then取值
  */
 const getui = require('./getui')
 
-getui.pushMessage(ctx.acceptParams, 'transmission', 'pushMessageToApp') // 透传消息 推送给所有 
+getui.pushMessage(message, 'transmission', 'pushMessageToApp') // 透传消息 推送给所有 
 
-getui.pushMessage(ctx.acceptParams, 'link', 'pushMessageToApp') // 跳转链接 推送给所有
+getui.pushMessage(message, 'link', 'pushMessageToApp') // 跳转链接 推送给所有
 
-getui.pushMessage(ctx.acceptParams, 'notification', 'pushMessageToApp') // 通知消息 推送给所有
+getui.pushMessage(message, 'notification', 'pushMessageToApp') // 通知消息 推送给所有
 
-getui.pushMessage(ctx.acceptParams, 'transmission', 'pushMessageToList') // 透传消息 推送给分组 需要设置别名
+getui.pushMessage(message, 'transmission', 'pushMessageToList') // 透传消息 推送给分组 需要设置别名
 
-getui.pushMessage(ctx.acceptParams, 'notification', 'pushMessageToList') // 通知消息 推送给分组 需要设置别名
+getui.pushMessage(message, 'notification', 'pushMessageToList') // 通知消息 推送给分组 需要设置别名
 
 ```
 
