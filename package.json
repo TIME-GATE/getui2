@@ -94,8 +94,8 @@
   "readme": "ERROR: No README data found!",
   "repository": {
     "type": "git",
-    "url": "https://github.com/npm/npm.git" 
+    "url": "https://github.com/TIME-GATE/getui2" 
   },
   "scripts": {},
-  "version": "0.1.4"
+  "version": "0.1.6"
 }
