@@ -15,3 +15,5 @@ module.exports.TransmissionTemplate = require('./getui/template/TransmissionTemp
 module.exports.SingleMessage = require('./getui/message/SingleMessage');
 module.exports.AppMessage = require('./getui/message/AppMessage');
 module.exports.ListMessage = require('./getui/message/ListMessage');
+
+module.exports.GeTuiDecorator = require('./GetuiDecorator');

@@ -1,32 +1,24 @@
-const GeTui = require('getui2').GeTui
-const Target = require('getui2').Target
+const GeTui = require('./GT.push')
+const Target = require('./getui/Target')
 
-const BaseTemplate = require('getui2').BaseTemplate
-const TransmissionTemplate = require('getui2').TransmissionTemplate
-const LinkTemplate = require('getui2').LinkTemplate
-const NotificationTemplate = require('getui2').NotificationTemplate
-const NotyPopLoadTemplate = require('getui2').NotyPopLoadTemplate
+const BaseTemplate = require('./getui/template/BaseTemplate')
+const TransmissionTemplate = require('./getui/template/TransmissionTemplate')
+const LinkTemplate = require('./getui/template/LinkTemplate')
+const NotificationTemplate = require('./getui/template/NotificationTemplate')
+const NotyPopLoadTemplate = require('./getui/template/NotyPopLoadTemplate')
 
-const AppMessage = require('getui2').AppMessage
-const ListMessage = require('getui2').ListMessage
-const SingleMessage = require('getui2').SingleMessage
+const AppMessage = require('./getui/message/AppMessage')
+const ListMessage = require('./getui/message/ListMessage')
+const SingleMessage = require('./getui/message/SingleMessage')
 
-const APNPayload = require('getui2').APNPayload
-const SimpleAlertMsg = require('getui2').SimpleAlertMsg
-const DictionaryAlertMsg = require('getui2').DictionaryAlertMsg
+const APNPayload = require('./payload/APNPayload')
+const SimpleAlertMsg = require('./payload/SimpleAlertMsg')
+const DictionaryAlertMsg = require('./payload/DictionaryAlertMsg')
 
-const GETUICONFIG = {
-  HOST: 'http://sdk.open.api.igexin.com/apiex.htm',
-  APPID: '',
-  APPKEY: '',
-  MASTERSECRET: '',
-},
-
-const gt = new GeTui(GETUICONFIG.HOST, GETUICONFIG.APPKEY, GETUICONFIG.MASTERSECRET)
-
-class PushMessage {
-  constructor(message, targets, options) {
-    this._message = message || {}
+class PushMessage extends GeTui {
+  constructor(options) {
+    super(options.HOST, options.APPKEY, options.MASTERSECRET)
+    this._options = options
   }
 
   pushMessage(message, templateType, methodName) {
@@ -43,10 +35,10 @@ class PushMessage {
     }
 
     const pushTargets = message.uidList.map((uid) => {
-      return new Target({ appId: GETUICONFIG.APPID, alias: uid })
+      return new Target({ appId: this._options.APPID, alias: uid })
     })
 
-    sails.log.info("GETUI PUSH MESSAGE UIDS:", pushTargets)
+    console.log("GETUI PUSH MESSAGE UIDS:", pushTargets)
 
     const messageTemplate = this.setMessageTemplate(message, templateType)
     const messageConfig = this.setMessageConfig(messageTemplate, methodName)
@@ -78,7 +70,7 @@ class PushMessage {
           isOffline: true,
           offlineExpireTime: 3600 * 12 * 1000,
           data: template,
-          appIdList: [GETUICONFIG.APPID],
+          appIdList: [this._options.APPID],
           speed: 10000,
         })
       case 'pushMessageToList':
@@ -99,7 +91,7 @@ class PushMessage {
           isOffline: true,
           offlineExpireTime: 3600 * 12 * 1000,
           data: template,
-          appIdList: [GETUICONFIG.APPID],
+          appIdList: [this._options.APPID],
           speed: 10000
         })
     }
@@ -122,15 +114,15 @@ class PushMessage {
 
   pushMessageToApp(messageConfig, pushTargets) {
     return new Promise((resolve, reject) => {
-      gt.pushMessageToApp(messageConfig, null, (err, res) => {
+      super.pushMessageToApp(messageConfig, null, (err, res) => {
 
-        sails.log.info("GETUI PUSH MESSAGE TO APP HAVE DONE:", res)
+        console.log("GETUI PUSH MESSAGE TO APP HAVE DONE:", res)
 
         if (!err && res && 'ok' === res.result) {
           return resolve({ code: 0, message: '推送成功' })
         }
 
-        sails.log.info("GETUI PUSH MESSAGE TO APP HAVE ERR:", err)
+        console.log("GETUI PUSH MESSAGE TO APP HAVE ERR:", err)
 
         resolve({ code: 100000, message: '推送错误' })
       })
@@ -139,19 +131,19 @@ class PushMessage {
 
   pushMessageToList(messageConfig, pushTargets) {
     return new Promise((resolve, reject) => {
-      gt.getContentId(messageConfig, null, (err, res) => {
+      super.getContentId(messageConfig, null, (err, res) => {
 
-        sails.log.info("GETUI PUSH MESSAGE TO LIST GET CONTENTID HAVE DONE:", res)
+        console.log("GETUI PUSH MESSAGE TO LIST GET CONTENTID HAVE DONE:", res)
 
-        gt.pushMessageToList(res, pushTargets, (err, res) => {
+        super.pushMessageToList(res, pushTargets, (err, res) => {
 
-          sails.log.info("GETUI PUSH MESSAGE TO LIST HAVE DONE:", res)
+          console.log("GETUI PUSH MESSAGE TO LIST HAVE DONE:", res)
 
           if (!err && res && 'ok' === res.result) {
             return resolve({ code: 0, message: '推送成功' })
           }
 
-          sails.log.info("GETUI PUSH MESSAGE TO LIST HAVE ERR:", err)
+          console.log("GETUI PUSH MESSAGE TO LIST HAVE ERR:", err)
 
           resolve({ code: 100000, message: '推送错误' })
         })
@@ -161,26 +153,26 @@ class PushMessage {
 
   pushMessageToSingle(messageConfig, pushTargets) {
     return new Promise((resolve, reject) => {
-      gt.pushMessageToSingle(messageConfig, pushTargets, (err, res) => {
+      super.pushMessageToSingle(messageConfig, pushTargets, (err, res) => {
 
         if (res && res.result === 'ok') {
           return resolve({ code: 0, message: '推送成功' })
         }
 
-        sails.log.info("GETUI PUSH MESSAGE TO SINGLE HAVE DONE:", res)
+        console.log("GETUI PUSH MESSAGE TO SINGLE HAVE DONE:", res)
 
         if (err && err.exception && err.exception instanceof RequestError) {
           const requestId = err.exception.requestId
 
-          gt.pushMessageToSingle(messageConfig, pushTargets, requestId, (err, res) => {
+          super.pushMessageToSingle(messageConfig, pushTargets, requestId, (err, res) => {
 
-            sails.log.info("GETUI PUSH MESSAGE TO SINGLE HAVE DONE:", res)
+            console.log("GETUI PUSH MESSAGE TO SINGLE HAVE DONE:", res)
 
             if (!err && 'ok' === res.result) {
               return resolve({ code: 0, message: '推送成功' })
             }
 
-            sails.log.info("GETUI PUSH MESSAGE TO SINGLE HAVE DONE:", err)
+            console.log("GETUI PUSH MESSAGE TO SINGLE HAVE DONE:", err)
 
             resolve({ code: 100000, message: '推送错误' })
           })
@@ -191,8 +183,8 @@ class PushMessage {
 
   composeLinkMessage(message) {
     return {
-      appId: GETUICONFIG.APPID,
-      appkey: GETUICONFIG.APPKEY,
+      appId: this._options.APPID,
+      appkey: this._options.APPKEY,
       title: message.title,
       text: message.text,
       logoUrl: message.logoUrl || message.url,
@@ -205,8 +197,8 @@ class PushMessage {
 
   composeTransmissionMessage(message) {
     return {
-      appId: GETUICONFIG.APPID,
-      appkey: GETUICONFIG.APPKEY,
+      appId: this._options.APPID,
+      appkey: this._options.APPKEY,
       transmissionType: 2,
       transmissionContent: this.formatTransmissioMsg(message)
     }
@@ -245,8 +237,8 @@ class PushMessage {
 
   bindAlias(params) {
     return new Promise((resolve, reject) => {
-      gt.bindAlias(GETUICONFIG.APPID, params.uid || params.CID, params.CID, (err, res) => {
-        sails.log(err, res, res.result)
+      super.bindAlias(this._options.APPID, params.uid || params.CID, params.CID, (err, res) => {
+        console.log(err, res, res.result)
 
         if (!err && res && 'ok' === res.result) {
           return resolve({ code: 0, message: '绑定成功' })
@@ -259,4 +251,6 @@ class PushMessage {
 
 }
 
-module.exports = new PushMessage()
+module.exports = (options) => {
+  return new PushMessage(options)
+}
