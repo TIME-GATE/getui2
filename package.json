@@ -61,7 +61,7 @@
   },
   "dependencies": {
     "crypto": "0.0.3",
-    "protobufjs": "^3.8.2",
+    "protobufjs": "^6.9.0",
     "request": "^2.51.0",
     "util": "^0.10.3"
   },
